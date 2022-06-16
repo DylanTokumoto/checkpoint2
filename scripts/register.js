@@ -4,8 +4,10 @@ const $nome = document.getElementById('nome');
 const $sobrenome = document.getElementById('sobrenome');
 const $email = document.getElementById('email');
 const $senha = document.getElementById('senha');
-const $confirm = document.getElementById('confirmSenha')
+const $confirm = document.getElementById('confirmSenha');
+export const ArrayAcerto = [];
 
+console.log(ArrayAcerto);
 
 $form.addEventListener('submit', (e) => {
 
@@ -19,10 +21,15 @@ $form.addEventListener('submit', (e) => {
         if ($nome.value === '' || $nome.value == null){
             e.preventDefault()
             console.log('nao inseriu o nome')
+            console.log(ArrayAcerto)
+            ArrayAcerto.shift();
+            console.log(ArrayAcerto)
         }
 
         else{
             console.log('inseriu o nome corretamente')
+            ArrayAcerto.unshift('ok')
+            console.log(ArrayAcerto)
         }
     }
 
@@ -35,6 +42,7 @@ $form.addEventListener('submit', (e) => {
 
         else{
             console.log('inseriu o sobrenome corretamente')
+            ArrayAcerto.push('ok')
         }
     }
 
@@ -52,6 +60,7 @@ $form.addEventListener('submit', (e) => {
 
         else {
             console.log('email inserido corretamente')
+            ArrayAcerto.push('ok')
         }
 
         function isEmail(email) {
@@ -102,7 +111,13 @@ $form.addEventListener('submit', (e) => {
 
         else{
             console.log('senhas iguais, tudo certo')
+            ArrayAcerto.push('ok')
         }
 
     }
 })
+
+
+
+
+
