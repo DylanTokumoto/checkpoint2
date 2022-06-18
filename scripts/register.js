@@ -1,66 +1,85 @@
+//capturando os elementos do HTML
 const $form = document.getElementById('form');
-const $input = document.querySelectorAll('input');
 const $nome = document.getElementById('nome');
 const $sobrenome = document.getElementById('sobrenome');
 const $email = document.getElementById('email');
 const $senha = document.getElementById('senha');
 const $confirm = document.getElementById('confirmSenha');
-export const ArrayAcerto = [];
 
-console.log(ArrayAcerto);
+//variaveis para validação geral
+var validName = false;
+var validLastName = false;
+var validEmail = false;
+var validSenha = false;
 
-$form.addEventListener('submit', (e) => {
+const $user = {
+    "firstName": `${$nome.value}`,
+    "lastName": `${$sobrenome.value}`,
+    "email": `${$email.value}`,
+    "password": `${$senha.value}`
+}
 
+//============ evento para validação
+$form.addEventListener('submit', async function formSubmit(e) {
+
+    //=========funções para validação
     checkName();
     checkLastName();
     checkEmail();
     checkSenha();
 
-    function checkName () {
-        
-        if ($nome.value === '' || $nome.value == null){
+    function checkName() {
+
+        if ($nome.value === '' || $nome.value == null) {
             e.preventDefault()
+            validName = false;
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('nao inseriu o nome')
-            console.log(ArrayAcerto)
-            ArrayAcerto.shift();
-            console.log(ArrayAcerto)
         }
 
-        else{
+        else {
             console.log('inseriu o nome corretamente')
-            ArrayAcerto.unshift('ok')
-            console.log(ArrayAcerto)
+            validName = true;
         }
     }
 
-    function checkLastName(){
+    function checkLastName() {
 
-        if($sobrenome.value === '' || $sobrenome.value == null){
+        if ($sobrenome.value === '' || $sobrenome.value == null) {
             e.preventDefault()
+            validLastName = false;
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('nao inseriu o sobrenome')
         }
 
-        else{
+        else {
             console.log('inseriu o sobrenome corretamente')
-            ArrayAcerto.push('ok')
+            validLastName = true;
         }
     }
 
-    function checkEmail(){
+    function checkEmail() {
 
-        if($email.value === '' || $email.value == null){
+        if ($email.value === '' || $email.value == null) {
             e.preventDefault()
+
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('nao inseriu email')
         }
 
-        else if(!isEmail($email.value)){
+        else if (!isEmail($email.value)) {
             e.preventDefault()
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('nao inseriu o email corretamente')
         }
 
         else {
-            console.log('email inserido corretamente')
-            ArrayAcerto.push('ok')
+            console.log('email inserido corretamente');
+            validEmail = true;
         }
 
         function isEmail(email) {
@@ -68,54 +87,101 @@ $form.addEventListener('submit', (e) => {
         }
     }
 
-    function checkSenha(){
+    function checkSenha() {
 
-        if($senha.value === '' || $senha.value == null){
+        if ($senha.value === '' || $senha.value == null) {
             e.preventDefault()
+
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('nao inseriu a senha')
         }
 
-        else if($senha.value.length < 8){
+        else if ($senha.value.length < 8) {
             e.preventDefault()
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('inseriu a senha com menos de 8 digitos')
         }
 
-        else if ($senha.value.length > 15 ){
+        else if ($senha.value.length > 15) {
             e.preventDefault();
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('inseriu senha maior que 15 digitos');
         }
 
-        else if(!/[A-Z]/.test($senha.value)){
+        else if (!/[A-Z]/.test($senha.value)) {
             e.preventDefault()
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('não colocou letra MAISCULA')
         }
 
-        else if(!/[0-9]/.test($senha.value)){
+        else if (!/[0-9]/.test($senha.value)) {
             e.preventDefault()
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('nao colocou numeros')
         }
 
-        else if(!/[^A-Za-z0-9]/.test($senha.value)){
+        else if (!/[^A-Za-z0-9]/.test($senha.value)) {
             e.preventDefault()
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('nao colocou caracteres especiais')
         }
 
-        else{
+        else {
             console.log('tudo OK')
         }
 
-        if($senha.value != $confirm.value){
+        if ($senha.value != $confirm.value || $confirm.value === '' || $confirm.value == null) {
             e.preventDefault();
+
+            //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('As senhas não são iguais')
         }
 
-        else{
+        else {
             console.log('senhas iguais, tudo certo')
-            ArrayAcerto.push('ok')
+            validSenha = true;
         }
 
     }
-})
+
+    cadastrar();
+
+    function cadastrar() {
+
+        if (validName && validLastName && validEmail && validSenha) {
+
+            fetchAPI();
+
+            function fetchAPI() {
+                fetch('https://ctd-todo-api.herokuapp.com/v1/users/', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': '*/*, application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "firstName": `${$nome.value}`,
+                        "lastName": `${$sobrenome.value}`,
+                        "email": `${$email.value}`,
+                        "password": `${$senha.value}`
+                    })
+                })
+                .then((response) => response.json())
+                .then(response => console.log(response))
+            }
+        }
+        else {
+            console.log('alguma coisa não deu certo');
+        }
+    }
+
+});
 
 
 
