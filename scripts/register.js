@@ -6,27 +6,30 @@ const $email = document.getElementById('email');
 const $senha = document.getElementById('senha');
 const $confirm = document.getElementById('confirmSenha');
 
+const $itens = document.querySelectorAll('.formiten')
+
 //variaveis para validação geral
 var validName = false;
 var validLastName = false;
 var validEmail = false;
 var validSenha = false;
 
-const $user = {
-    "firstName": `${$nome.value}`,
-    "lastName": `${$sobrenome.value}`,
-    "email": `${$email.value}`,
-    "password": `${$senha.value}`
-}
+// const $user = {
+//     "firstName": `${$nome.value}`,
+//     "lastName": `${$sobrenome.value}`,
+//     "email": `${$email.value}`,
+//     "password": `${$senha.value}`
+// }
 
 //============ evento para validação
-$form.addEventListener('submit', async function formSubmit(e) {
+$form.addEventListener('submit', function formSubmit(e) {
 
     //=========funções para validação
     checkName();
     checkLastName();
     checkEmail();
     checkSenha();
+    cadastrar();
 
     function checkName() {
 
@@ -36,6 +39,7 @@ $form.addEventListener('submit', async function formSubmit(e) {
 
             //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('nao inseriu o nome')
+            $itens[0].classList.add('.error')
         }
 
         else {
@@ -95,6 +99,7 @@ $form.addEventListener('submit', async function formSubmit(e) {
 
             //============= parte visual para o usuario identificar em qual campo ele errou =============
             console.log('nao inseriu a senha')
+
         }
 
         else if ($senha.value.length < 8) {
@@ -150,40 +155,37 @@ $form.addEventListener('submit', async function formSubmit(e) {
 
     }
 
-    cadastrar();
-
-    function cadastrar() {
-
-        if (validName && validLastName && validEmail && validSenha) {
-
-            fetchAPI();
-
-            function fetchAPI() {
-                fetch('https://ctd-todo-api.herokuapp.com/v1/users/', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': '*/*, application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "firstName": `${$nome.value}`,
-                        "lastName": `${$sobrenome.value}`,
-                        "email": `${$email.value}`,
-                        "password": `${$senha.value}`
-                    })
-                })
-                .then((response) => response.json())
-                .then(response => console.log(response))
-            }
-        }
-        else {
-            console.log('alguma coisa não deu certo');
-        }
-    }
-
 });
 
+function cadastrar() {
 
+    if (validName && validLastName && validEmail && validSenha) {
+        fetch('https://ctd-todo-api.herokuapp.com/v1/users', {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*, text/plain, application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Headers': '*'
+            },
+            body: JSON.stringify({
+                "firstName": `${$nome.value}`,
+                "lastName": `${$sobrenome.value}`,
+                "email": `${$email.value}`,
+                "password": `${$senha.value}`
+            })
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            localStorage.setItem("token", JSON.stringify(data));
+            window.location.href = 'tarefas.html';
 
+            console.log(data);
+        }).catch((error) => {
+            // console.log(error);
+        })
+    }
+    else {
+        console.log('alguma coisa não deu certo');
+    }
 
-
+}

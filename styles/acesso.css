@@ -72,10 +72,11 @@ button {
   text-align: center;
 }
 
-.error{
-  border-color: #c80003;
+
+
+.formiten.error input{
+  border: #c80003;
   animation: shake .15s 3;
-  visibility: hidden;
 }
 
 .success{

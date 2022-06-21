@@ -12,7 +12,7 @@
 
   <!-- ---------------------- lógica aplicada no registro -------------------- -->
   <!-- <script src="/scripts/utils.js"></script> -->
-  <script defer src="./scripts/register.js"></script>
+  <script src="./scripts/register.js" defer></script>
 
 </head>
 
@@ -27,26 +27,40 @@
         <p>To-Do App</p>
       </div>
 
-      <label>
-        Nome:
-        <input type="text" id="nome" placeholder="Nome">
-      </label>
-      <label>
-        Sobrenome:
-        <input type="text" id="sobrenome" placeholder="Sobrenome">
-      </label>
-      <label>
-        Email:
-        <input type="text" id="email" placeholder="E-mail">
-      </label>
-      <label>
-        Senha:
-        <input type="password" id="senha" placeholder="Senha">
-      </label>
-      <label>
-        Repetir senha:
-        <input type="password" id="confirmSenha" placeholder="Confirme a senha">
-      </label>
+      <div class="formiten">
+        <label>
+          Nome:
+          <input type="text" id="nome" placeholder="Nome">
+        </label>
+      </div>
+
+      <div class="formiten">
+        <label>
+          Sobrenome:
+          <input type="text" id="sobrenome" placeholder="Sobrenome">
+        </label>
+      </div>
+
+      <div class="formiten">
+        <label>
+          Email:
+          <input type="text" id="email" placeholder="E-mail">
+        </label>
+      </div>
+
+      <div class="formiten">
+        <label>
+          Senha:
+          <input type="password" id="senha" placeholder="Senha">
+        </label>
+      </div>
+
+      <div class="formiten">
+        <label>
+          Repetir senha:
+          <input type="password" id="confirmSenha" placeholder="Confirme a senha">
+        </label>
+      </div>
 
       <button id="btn">Criar conta </button>
 
